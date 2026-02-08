@@ -1,0 +1,35 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Environment / secrets
+.env
+*.env.local
+config.yaml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Downloads / temp
+downloads/
+*.pdf
+!examples/*.pdf
+
+# Browser state
+browser_state/
+
+# Screenshots from error debugging
+screenshots/

@@ -1,0 +1,90 @@
+{
+  "name": "expensify-os Monthly Run",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtDay": 1,
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "command": "op run --env-file=/path/to/expensify-os/.env.op -- uv run expensify-os run",
+        "cwd": "/path/to/expensify-os"
+      },
+      "name": "Run expensify-os",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [470, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.exitCode }}",
+              "operation": "equal",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "name": "Check Exit Code",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [690, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "method": "POST",
+        "body": "json",
+        "jsonBody": "={{ JSON.stringify({ text: ':white_check_mark: expensify-os completed successfully\\n' + $json.stdout }) }}"
+      },
+      "name": "Slack Success",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [910, 200]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "method": "POST",
+        "body": "json",
+        "jsonBody": "={{ JSON.stringify({ text: ':x: expensify-os failed!\\nExit code: ' + $json.exitCode + '\\n' + $json.stderr }) }}"
+      },
+      "name": "Slack Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [910, 400]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [{ "node": "Run expensify-os", "type": "main", "index": 0 }]
+      ]
+    },
+    "Run expensify-os": {
+      "main": [
+        [{ "node": "Check Exit Code", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Exit Code": {
+      "main": [
+        [{ "node": "Slack Success", "type": "main", "index": 0 }],
+        [{ "node": "Slack Failure", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}
