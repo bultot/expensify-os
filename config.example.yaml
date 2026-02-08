@@ -1,6 +1,6 @@
 expensify:
-  partner_user_id: "op://work/expensify-api/partner_user_id"
-  partner_user_secret: "op://work/expensify-api/partner_user_secret"
+  partner_user_id: "op://Private/Expensify API/partnerUserID"
+  partner_user_secret: "op://Private/Expensify API/partnerUserSecret"
   employee_email: "robin@backbase.com"
   default_currency: "EUR"
 
@@ -8,24 +8,24 @@ plugins:
   anthropic:
     enabled: true
     credentials:
-      admin_api_key: "op://work/anthropic/admin_api_key"
-      console_email: "op://work/anthropic/email"
-      console_password: "op://work/anthropic/password"
+      admin_api_key: "op://Private/anthropic/admin_api_key"
+      console_email: "op://Private/anthropic/email"
+      console_password: "op://Private/anthropic/password"
     category: "AI & ML Services"
 
   openai:
     enabled: true
     credentials:
-      api_key: "op://work/openai/api_key"
-      platform_email: "op://work/openai/email"
-      platform_password: "op://work/openai/password"
+      api_key: "op://Private/openai/api_key"
+      platform_email: "op://Private/openai/email"
+      platform_password: "op://Private/openai/password"
     category: "AI & ML Services"
 
   vodafone:
     enabled: true
     credentials:
-      username: "op://personal/vodafone/username"
-      password: "op://personal/vodafone/password"
+      username: "op://Private/vodafone/username"
+      password: "op://Private/vodafone/password"
     category: "Mobile & Telecom"
 
 browser:
